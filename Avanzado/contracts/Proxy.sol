@@ -15,13 +15,13 @@ contract Proxy is Storage {
     currentAddress = _newAddress;
   }
 
-  //FALLBACK FUNCTION.
+  //FN FALLBACK.
   function () payable external {
-    address implementation = currentAddress;
     require(currentAddress != address(0));
+    address implementation = currentAddress;
     bytes memory data = msg.data;
 
-    //DELEGATECALL EVERY FUNCTION CALL
+    //Delegar cada llamada a una función
     assembly {
       let result := delegatecall(gas, implementation, add(data, 0x20), mload(data), 0, 0)
       let size := returndatasize
